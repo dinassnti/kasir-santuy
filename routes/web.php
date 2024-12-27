@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\TokoController;
+use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -31,6 +32,11 @@ Route::get('/stok', [StokController::class, 'index'])->name('stok.index');
 Route::post('/stok/{id}/update', [StokController::class, 'update'])->name('stok.update');
 Route::resource('diskon', DiskonController::class);
 Route::resource('staff', StaffController::class);
+//Transaksi
+Route::resource('transaksi', TransaksiController::class);
+Route::get('transaksi/struk', [TransaksiController::class, 'struk'])->name('transaksi.struk');
+Route::get('/laporan-transaksi', [TransaksiController::class, 'laporanTransaksi'])->name('laporan-transaksi.index');
+Route::get('/laporan-transaksi/{id}', [TransaksiController::class, 'detailTransaksi'])->name('laporan-transaksi.detail');
 //Toko
 Route::middleware('auth')->group(function () {
     Route::get('/toko/edit', function () {

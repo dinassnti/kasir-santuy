@@ -35,7 +35,7 @@ class TokoController extends Controller
             $data['foto_toko'] = $path; // Simpan path ke database
         }
 
-        // Simpan data toko
+        $data['user_id'] = auth()->id();
         Toko::create($data);
 
         return redirect()->route('toko.show')->with('success', 'Toko berhasil ditambahkan.');
@@ -66,7 +66,8 @@ class TokoController extends Controller
             }
             $data['foto_toko'] = $request->file('foto_toko')->store('toko', 'public');
         }
-
+        
+        $data['user_id'] = $toko->user_id;
         $toko->update($data);
 
         return redirect()->route('toko.show')->with('success', 'Toko berhasil diperbarui.');

@@ -12,7 +12,7 @@ class Toko extends Model
     protected $table = 'toko';
     protected $primaryKey = 'id_toko';
     protected $fillable = [
-        'use_id',
+        'user_id',
         'jenis_usaha',
         'nama_toko',
         'email',
@@ -25,11 +25,5 @@ class Toko extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
-    public function transaksi()
-    {
-        return $this->hasMany(Transaksi::class, 'id_toko');
-    }
-
 }
 

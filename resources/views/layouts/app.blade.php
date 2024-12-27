@@ -185,6 +185,14 @@
             </div>
             <ul class="nav flex-column mt-4">
                 <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+                        <div class="nav-box">
+                            <i data-feather="home"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </div>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}" href="{{ route('profile.edit') }}">
                         <div class="nav-box">
                             <i data-feather="user"></i>
@@ -197,14 +205,6 @@
                         <div class="nav-box">
                             <i data-feather="globe"></i> 
                             <span class="nav-text">Toko</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                        <div class="nav-box">
-                            <i data-feather="home"></i>
-                            <span class="nav-text">Dashboard</span>
                         </div>
                     </a>
                 </li>
@@ -251,16 +251,32 @@
                             </div>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('staff.index') ? 'active' : '' }}" href="{{ route('staff.index') }}">
-                            <div class="nav-box">
-                                <i data-feather="users"></i>
-                                <span class="nav-text">Data Staff</span>
-                            </div>
-                        </a>
-                    </li>
                 </ul>
             </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('staff.index') ? 'active' : '' }}" href="{{ route('staff.index') }}">
+                <div class="nav-box">
+                    <i data-feather="users"></i>
+                    <span class="nav-text">Data Staff</span>
+                </div>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('transaksi.index') ? 'active' : '' }}" href="{{ route('transaksi.index') }}">
+                <div class="nav-box">
+                    <i data-feather="file-text"></i>
+                    <span class="nav-text">Transaksi</span>
+                </div>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('laporan-transaksi.index') ? 'active' : '' }}" href="{{ route('laporan-transaksi.index') }}">
+                <div class="nav-box">
+                    <i data-feather="bar-chart-2"></i>
+                    <span class="nav-text">Laporan Transaksi</span>
+                </div>
+            </a>
         </li>
             </ul>
             <div class="sidebar-footer">
