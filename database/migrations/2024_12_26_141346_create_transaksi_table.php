@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_transaksi');
             $table->foreignId('id_staff')->constrained('staff')->onDelete('cascade');
             $table->foreignId('id_diskon')->nullable()->constrained('diskon')->onDelete('set null');
-            $table->string('nomor_transaksi')->unique()->nullable();
+            $table->string('nomor_transaksi')->unique();
             $table->decimal('jumlah_bayar', 15, 2);
             $table->decimal('kembalian', 15, 2);
             $table->timestamp('log_waktu')->useCurrent();

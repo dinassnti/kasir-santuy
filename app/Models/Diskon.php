@@ -18,7 +18,6 @@ class Diskon extends Model
         'user_id',
         'nama_diskon',
         'persentase',
-        'nominal',
         'tanggal_mulai',
         'tanggal_berakhir',
     ];

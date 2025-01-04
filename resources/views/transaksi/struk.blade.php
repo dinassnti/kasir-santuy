@@ -9,13 +9,15 @@
     </div>
     <div class="card-body">
         <!-- Tampilkan nama toko, alamat, dan nomor telepon -->
-        <p><strong>Toko:</strong> {{ $toko->nama_toko ?? 'Toko tidak ditemukan' }}</p>
-        <p><strong>Alamat:</strong> {{ $toko->alamat ?? 'Alamat tidak tersedia' }}</p>
-        <p><strong>Telepon:</strong> {{ $toko->no_telepon ?? 'Nomor telepon tidak tersedia' }}</p>
+        <div class="text-center mb-4">
+            <p><strong>{{ $toko->nama_toko ?? 'Toko tidak ditemukan' }}</strong></p>
+            <p><strong>{{ $toko->alamat ?? 'Alamat tidak tersedia' }}</strong></p>
+            <p><strong>{{ $toko->no_telepon ?? 'Nomor telepon tidak tersedia' }}</strong></p>
+        </div>
 
         <p><strong>Nomor Transaksi:</strong> {{ $transaksi->nomor_transaksi }}</p>
         <p><strong>Waktu:</strong> {{ $transaksi->created_at }}</p>
-        <p><strong>Staff:</strong> {{ optional($transaksi->staff)->nama_staff ?? 'Staff tidak tersedia' }}</p>
+        <p><strong>Staff:</strong> {{ $transaksi->staff->nama_staff ?? 'Staff tidak tersedia' }}</p>
         
         <h3 class="mt-4">Detail Belanja:</h3>
         <table class="table table-bordered">
@@ -39,7 +41,7 @@
 
         <!-- Tampilkan total, diskon, jumlah bayar, dan kembalian -->
         <h3>Total Belanja: {{ number_format($total, 2) }}</h3>
-        <p><strong>Diskon:</strong> {{ optional($transaksi->diskon)->jumlah_diskon ?? 0 }}%</p>
+        <p><strong>Diskon:</strong> {{ $transaksi->diskon->jumlah_diskon ?? 'Diskon tidak tersedia' }}%</p>
         <p><strong>Jumlah Bayar:</strong> {{ number_format($transaksi->jumlah_bayar, 2) }}</p>
         <p><strong>Kembalian:</strong> {{ number_format($transaksi->kembalian, 2) }}</p>
     </div>

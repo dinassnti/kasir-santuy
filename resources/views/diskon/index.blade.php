@@ -26,7 +26,6 @@
                             <th style="width: 5%">No</th>
                             <th>Nama Diskon</th>
                             <th>Persentase</th>
-                            <th>Nominal</th>
                             <th>Periode</th>
                             <th style="width: 20%">Aksi</th>
                         </tr>
@@ -37,7 +36,6 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $d->nama_diskon }}</td>
                             <td>{{ $d->persentase ? $d->persentase . '%' : '-' }}</td>
-                            <td>{{ $d->nominal ? 'Rp' . number_format($d->nominal, 0, ',', '.') : '-' }}</td>
                             <td>{{ $d->tanggal_mulai }} / {{ $d->tanggal_berakhir }}</td>
                             <td>
                                 <a href="{{ route('diskon.edit', $d->id_diskon) }}" class="btn btn-warning btn-sm me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Diskon">

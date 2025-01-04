@@ -9,7 +9,7 @@
 
 <div class="row">
     <!-- Card for Jumlah Produk -->
-    <div class="col-md-4 mb-4">
+    <div class="col-md-6 mb-5">
         <div class="card text-white bg-primary">
             <div class="card-body">
                 <h5 class="card-title">Jumlah Produk</h5>
@@ -19,11 +19,11 @@
     </div>
 
     <!-- Card for Jumlah Transaksi (UI only, not connected to DB yet) -->
-    <div class="col-md-4 mb-4">
+    <div class="col-md-6 mb-5">
         <div class="card text-white bg-success">
             <div class="card-body">
                 <h5 class="card-title">Jumlah Transaksi</h5>
-                <p class="card-text">0 Transaksi</p>  <!-- Static number, will be dynamic later -->
+                <p class="card-text">{{ $jumlahTransaksi }} Transaksi</p>  <!-- Static number, will be dynamic later -->
             </div>
         </div>
     </div>

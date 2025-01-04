@@ -17,8 +17,7 @@ class CreateDiskonTable extends Migration
             $table->id('id_diskon'); // Primary key
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('nama_diskon', 50);
-            $table->decimal('persentase', 5, 2)->nullable(); // Diskon dalam persen (0-100%)
-            $table->decimal('nominal', 15, 2)->nullable(); // Nominal diskon
+            $table->decimal('persentase', 5, 2); // Diskon dalam persen (0-100%)
             $table->date('tanggal_mulai'); // Tanggal mulai diskon
             $table->date('tanggal_berakhir'); // Tanggal berakhir diskon
             $table->timestamps(); // created_at dan updated_at

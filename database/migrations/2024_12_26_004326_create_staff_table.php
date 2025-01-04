@@ -20,7 +20,7 @@ class CreateStaffTable extends Migration
             $table->string('no_telepon');
             $table->text('alamat');
             $table->string('password');
-            $table->boolean('status_aktif')->default(true);
+            $table->enum('status', ['Aktif', 'Tidak Aktif'])->default('Aktif');
             $table->timestamps();
         });
     }

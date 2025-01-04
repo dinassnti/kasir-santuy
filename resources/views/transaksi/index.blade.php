@@ -44,17 +44,18 @@
                 @csrf
 
                 <div class="row">
-                {{-- Nama Staff --}}
-                <div class="form-group">
-                    <label for="nama_staff">Nama Staff</label>
-                    <input type="text" id="nama_staff" class="form-control" value="{{ Auth::user()->staff->nama ?? 'Staff tidak ditemukan' }}" readonly>
-                </div>
-                <div class="col-md-4">
+                    {{-- Nama Staff --}}
                     <div class="form-group">
-                        <label for="nomor_transaksi">Nomor Transaksi</label>
-                        <input type="text" id="nomor_transaksi" class="form-control" value="{{ old('nomor_transaksi', 'TRX-' . now()->format('Ymd') . '-001') }}" readonly>
+                        <label for="nama_staff">Nama Staff</label>
+                        <input type="text" id="nama_staff" class="form-control" value="{{ Auth::user()->staff->nama ?? 'Staff tidak ditemukan' }}" readonly>
                     </div>
-                </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="nomor_transaksi">Nomor Transaksi</label>
+                            <input type="text" id="nomor_transaksi" class="form-control" 
+                                value="{{ old('nomor_transaksi', 'TRX-' . now()->format('Ymd') . '-' . str_pad(\App\Models\Transaksi::count() + 1, 3, '0', STR_PAD_LEFT)) }}" readonly>
+                        </div>
+                    </div>
                     {{-- Pilih Produk --}}
                     <div class="col-md-6">
                         <div class="form-group">
@@ -200,23 +201,27 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${produk.nama_produk}</td>
-                    <td>Rp${produk.harga_satuan.toLocaleString()}</td>
+                    <td>Rp${produk.harga_satuan.toLocaleString('id-ID')}</td>
                     <td>${produk.jumlah}</td>
-                    <td>Rp${produk.subtotal.toLocaleString()}</td>
+                    <td>Rp${produk.subtotal.toLocaleString('id-ID')}</td>
                     <td><button class="btn btn-danger btn-sm" onclick="hapusProduk(${index})">Hapus</button></td>
                 `;
                 produkTable.appendChild(row);
                 total += produk.subtotal;
             });
 
-            // Terapkan diskon
-            const diskonOption = diskonSelect.options[diskonSelect.selectedIndex];
-            const diskon = parseFloat(diskonOption.dataset.diskon) || 0;
-            const totalDiskon = total * (diskon / 100);
+            // Terapkan diskon jenis persentase
+            const selectedOption = diskonSelect.options[diskonSelect.selectedIndex];
+            const nilaiDiskon = parseFloat(selectedOption.getAttribute('data-diskon')) || 0;
+
+            const totalDiskon = total * (nilaiDiskon / 100);
             const totalAfterDiskon = total - totalDiskon;
 
-            totalInput.value = `Rp${totalAfterDiskon.toLocaleString()}`;
-            produkDataInput.value = JSON.stringify({ produkList, diskon, totalAfterDiskon });
+            console.log(`Diskon: ${nilaiDiskon}% (Rp${totalDiskon.toLocaleString('id-ID')})`);
+
+            // Tampilkan total setelah diskon
+            totalInput.value = `Rp${totalAfterDiskon.toLocaleString('id-ID')}`;
+            produkDataInput.value = JSON.stringify({ produkList, nilaiDiskon, totalAfterDiskon });
         }
 
         // Hapus Produk dari Daftar
@@ -233,12 +238,14 @@
         // Hitung Kembalian
         jumlahBayarInput.addEventListener('input', function () {
             const total = produkList.reduce((sum, produk) => sum + produk.subtotal, 0);
-            const diskon = parseFloat(diskonSelect.options[diskonSelect.selectedIndex].dataset.diskon) || 0;
-            const totalAfterDiskon = total - (total * (diskon / 100));
+            const selectedOption = diskonSelect.options[diskonSelect.selectedIndex];
+            const nilaiDiskon = parseFloat(selectedOption.getAttribute('data-diskon')) || 0;
 
+            const totalAfterDiskon = total - (total * (nilaiDiskon / 100));
             const jumlahBayar = parseFloat(jumlahBayarInput.value) || 0;
             const kembalian = jumlahBayar - totalAfterDiskon;
-            kembalianInput.value = kembalian >= 0 ? `Rp${kembalian.toLocaleString()}` : 'Rp0';
+
+            kembalianInput.value = kembalian >= 0 ? `Rp${kembalian.toLocaleString('id-ID')}` : 'Rp0';
         });
     });
 </script>

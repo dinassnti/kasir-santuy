@@ -58,12 +58,12 @@
 
         <!-- Pilihan Status Aktif -->
         <div class="mb-4">
-            <label for="status_aktif" class="form-label">Status Aktif</label>
-            <select name="status_aktif" id="status_aktif" class="form-control shadow-sm @error('status_aktif') is-invalid @enderror" required>
-                <option value="1" {{ old('status_aktif') == '1' ? 'selected' : '' }}>Aktif</option>
-                <option value="0" {{ old('status_aktif') == '0' ? 'selected' : '' }}>Tidak Aktif</option>
+            <label for="status" class="form-label">Status</label>
+            <select name="status" id="status" class="form-control shadow-sm @error('status') is-invalid @enderror" required>
+                <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Aktif</option>
+                <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Tidak Aktif</option>
             </select>
-            @error('status_aktif')
+            @error('status')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>

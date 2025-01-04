@@ -41,6 +41,12 @@
                         @endif
                     </div>
 
+                    <!-- Tampilan Role (readonly) -->
+                    <div class="mb-3">
+                        <label for="role" class="form-label">{{ __('Role') }}</label>
+                        <input id="role" name="role" type="text" class="form-control" value="{{ $user->role }}" readonly>
+                    </div>
+
                     <div>
                         <button type="submit" class="btn btn-primary">{{ __('Simpan') }}</button>
                     </div>

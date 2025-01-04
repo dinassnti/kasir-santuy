@@ -21,11 +21,15 @@ class Transaksi extends Model
     public static function boot()
     {
         parent::boot();
-    
-        // Sebelum menyimpan transaksi, buat nomor transaksi unik
-        static::creating(function ($transaksi) {
-            // Menentukan nomor transaksi dengan format tertentu, misalnya "TRX-YYYYMMDD-001"
-            $transaksi->nomor_transaksi = 'TRX-' . now()->format('Ymd') . '-' . str_pad($transaksi->id_transaksi, 3, '0', STR_PAD_LEFT);
+
+        // Setelah transaksi disimpan, buat nomor transaksi yang unik
+        static::created(function ($transaksi) {
+            // Menyusun nomor transaksi setelah transaksi disimpan
+            $nomorTransaksi = 'TRX-' . now()->format('Ymd') . '-' . str_pad($transaksi->id, 3, '0', STR_PAD_LEFT);
+            
+            // Perbarui nomor transaksi di database
+            $transaksi->nomor_transaksi = $nomorTransaksi;
+            $transaksi->save(); // Simpan perubahan nomor transaksi
         });
     }
 

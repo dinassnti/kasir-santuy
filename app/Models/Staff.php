@@ -14,7 +14,7 @@ class Staff extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'user_id', 'nama', 'email', 'no_telepon', 'alamat', 'password', 'status_aktif'
+        'user_id', 'nama', 'email', 'no_telepon', 'alamat', 'password', 'status'
     ];
 
 public function user()

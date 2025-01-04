@@ -51,7 +51,7 @@
                             <td>{{ $staff->no_telepon }}</td>
                             <td class="text-truncate" style="max-width: 250px;">{{ $staff->alamat }}</td>
                             <td>
-                                @if ($staff->status_aktif)
+                                @if ($staff->status)
                                     <span class="badge bg-success">Aktif</span>
                                 @else
                                     <span class="badge bg-secondary">Tidak Aktif</span>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Produk;
 use App\Models\Staff;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,10 +16,11 @@ class DashboardController extends Controller
         $user = Auth::user();
         $staff = $user->staff;
         $jumlahProduk = Produk::count();
+        $jumlahTransaksi = Transaksi::count();
         // $jumlahPelanggan = Pelanggan::count();
         
         // Kirim data ke view
-        return view('dashboard', compact('jumlahProduk', 'user', 'staff'));
+        return view('dashboard', compact('jumlahProduk', 'jumlahTransaksi', 'user', 'staff'));
     }
 
     public function dashboard()
