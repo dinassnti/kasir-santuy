@@ -9,7 +9,7 @@ class TokoController extends Controller
 {
     public function show()
     {
-        $toko = Toko::first(); // Ambil data toko pertama
+        $toko = Toko::first();
         return view('toko.show', compact('toko'));
     }
 
@@ -32,7 +32,7 @@ class TokoController extends Controller
         if ($request->hasFile('foto_toko')) {
             $file = $request->file('foto_toko');
             $path = $file->store('toko_foto', 'public');
-            $data['foto_toko'] = $path; // Simpan path ke database
+            $data['foto_toko'] = $path; 
         }
 
         $data['user_id'] = auth()->id();
@@ -43,7 +43,7 @@ class TokoController extends Controller
 
     public function edit()
     {
-        $toko = Toko::first(); // Ambil data toko pertama
+        $toko = Toko::first(); 
         return view('toko.edit', compact('toko'));
     }
 

@@ -12,26 +12,14 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Ambil data jumlah produk dan pelanggan
-        $user = Auth::user();
-        $staff = $user->staff;
         $jumlahProduk = Produk::count();
         $jumlahTransaksi = Transaksi::count();
-        // $jumlahPelanggan = Pelanggan::count();
-        
+        $jumlahStaff = Staff::count();
+        $transaksiTerbaru = Transaksi::latest()->take(5)->get();
+        $totalPendapatan = Transaksi::sum('jumlah_bayar');
+
         // Kirim data ke view
-        return view('dashboard', compact('jumlahProduk', 'jumlahTransaksi', 'user', 'staff'));
-    }
-
-    public function dashboard()
-    {
-        $user = Auth::user(); // Data dari tabel users
-        $staff = Staff::where('email', $user->email)->first(); // Ambil data dari tabel data_staff
-
-        return view('dashboard', [
-            'nama' => $staff ? $staff->name : 'Admin', // Nama untuk staff, default Admin
-            'role' => $user->role,
-        ]);
+        return view('dashboard', compact('jumlahProduk', 'jumlahTransaksi', 'jumlahStaff', 'transaksiTerbaru', 'totalPendapatan'));
     }
 }
 

@@ -22,7 +22,6 @@ class StaffController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input
         $validated = $request->validate([
             'nama' => 'required|string|max:100',
             'alamat' => 'required|string',
@@ -31,25 +30,22 @@ class StaffController extends Controller
             'password' => 'required|string|min:6',
         ]);
     
-        // Simpan ke tabel users terlebih dahulu
         $user = User::create([
             'nama' => $validated['nama'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'role' => 'staff', // Set role sebagai staff
+            'role' => 'staff', 
         ]);
     
-        // Simpan ke tabel staff setelah user dibuat
         Staff::create([
-            'user_id' => $user->id, // Gunakan user_id yang baru saja dibuat
+            'user_id' => $user->id, 
             'nama' => $validated['nama'],
             'alamat' => $validated['alamat'],
             'no_telepon' => $validated['no_telepon'],
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password']), // Simpan password di tabel staff
+            'password' => Hash::make($validated['password']), 
         ]);
     
-        // Redirect ke halaman staff dengan pesan sukses
         return redirect()->route('staff.index')->with('success', 'Staff berhasil ditambahkan!');
     }
 
@@ -63,7 +59,6 @@ class StaffController extends Controller
     {
         $staff = Staff::findOrFail($id_staff);
 
-        // Validasi input
         $validated = $request->validate([
             'nama' => 'required|string|max:100',
             'email' => 'required|email|unique:staff,email,' . $id_staff . ',id_staff|unique:users,email,' . $staff->user_id,
@@ -71,7 +66,6 @@ class StaffController extends Controller
             'alamat' => 'required|string',
         ]);
 
-        // Update data staff
         $staff->update([
             'nama' => $validated['nama'],
             'email' => $validated['email'],
@@ -79,7 +73,6 @@ class StaffController extends Controller
             'alamat' => $validated['alamat'],
         ]);
 
-        // Update data pada tabel users
         $staff->user->update([
             'email' => $validated['email'],
         ]);
@@ -89,13 +82,8 @@ class StaffController extends Controller
 
     public function destroy($id)
     {
-        // Cari staff berdasarkan ID
         $staff = Staff::findOrFail($id);
-    
-        // Hapus data terkait di tabel users
         $staff->user()->delete();
-    
-        // Hapus data staff
         $staff->delete();
     
         return redirect()->route('staff.index')->with('success', 'Staff dan akun pengguna berhasil dihapus.');

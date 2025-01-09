@@ -9,7 +9,7 @@
         <div class="card-body">
             <!-- Menampilkan informasi pengguna yang sedang login -->
             <div class="alert alert-info shadow-sm mb-4">
-                <strong>Nama Admin:</strong> {{ Auth::user()->nama ?? 'Pengguna tidak dikenal' }}
+                <strong>Nama User:</strong> {{ Auth::user()->nama ?? 'Pengguna tidak dikenal' }}
             </div>
 
             <form action="{{ route('staff.store') }}" method="POST">

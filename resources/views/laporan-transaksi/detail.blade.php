@@ -8,28 +8,11 @@
         </div>
         <div class="card-body">
             <!-- Informasi dasar transaksi -->
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <p><strong>Kasir:</strong> 
-                        {{ $transaksi->user->nama ?? 'Pengguna Tidak Ditemukan' }}
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Tanggal Transaksi:</strong> {{ $transaksi->created_at->format('d/m/Y H:i:s') }}</p>
-                </div>
-            </div>
-
-            <!-- Diskon (jika ada) -->
             <div class="mb-4">
-                @if($transaksi->diskon)
-                    <p><strong>Diskon:</strong> 
-                        {{ $transaksi->diskon->persentase }}%
-                    </p>
-                @else
-                    <p><strong>Diskon:</strong> 
-                        Tidak ada diskon
-                    </p>
-                @endif
+                <p><strong>Tanggal Transaksi:</strong> {{ $transaksi->created_at->format('d/m/Y') }}</p>
+                <p><strong>Kasir:</strong> 
+                    {{ $transaksi->user->nama ?? 'Pengguna Tidak Ditemukan' }}
+                </p>
             </div>
 
             <!-- Detail produk yang dibeli -->
@@ -63,30 +46,28 @@
                 </table>
             </div>
 
-            <!-- Total belanja dan informasi pembayaran -->
+            <!-- Total belanja, diskon, dan informasi pembayaran -->
             <div class="mt-4">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5 class="text-success">Total Belanja:</h5>
-                    </div>
-                    <div class="col-md-6 text-end">
-                        <h5 class="text-success">Rp {{ number_format($transaksi->detailTransaksi->sum('subtotal'), 2, ',', '.') }}</h5>
+                <div class="row mb-2">
+                    <div class="col-md-12 text-start">
+                        <h5 class="text-success">Total Belanja: Rp {{ number_format($transaksi->detailTransaksi->sum('subtotal'), 2, ',', '.') }}</h5>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <strong>Jumlah Bayar:</strong>
-                    </div>
-                    <div class="col-md-6 text-end">
-                        Rp {{ number_format($transaksi->jumlah_bayar, 2, ',', '.') }}
+                <div class="row mb-2">
+                    <div class="col-md-12 text-start">
+                        <p><strong>Diskon:</strong> 
+                            {{ $transaksi->diskon ? $transaksi->diskon->persentase . '%' : 'Tidak ada diskon' }}
+                        </p>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <strong>Kembalian:</strong>
+                <div class="row mb-2">
+                    <div class="col-md-12 text-start">
+                        <p><strong>Jumlah Bayar:</strong> Rp {{ number_format($transaksi->jumlah_bayar, 2, ',', '.') }}</p>
                     </div>
-                    <div class="col-md-6 text-end">
-                        Rp {{ number_format($transaksi->kembalian, 2, ',', '.') }}
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-12 text-start">
+                        <p><strong>Kembalian:</strong> Rp {{ number_format($transaksi->kembalian, 2, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
