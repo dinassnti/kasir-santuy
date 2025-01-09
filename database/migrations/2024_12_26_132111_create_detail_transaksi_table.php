@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('detail_transaksi', function (Blueprint $table) {
-            $table->id('id_detail_transaksi');
-            $table->foreignId('id_transaksi')->constrained('transaksi')->onDelete('cascade');
-            $table->foreignId('id_produk')->constrained('produk')->onDelete('cascade');
-            $table->integer('jumlah');
-            $table->decimal('harga_satuan', 15, 2);
-            $table->decimal('subtotal', 15, 2)->storedAs('jumlah * harga_satuan'); // Subtotal dihitung otomatis
-            $table->decimal('total', 15, 2)->storedAs('subtotal'); // Total dihitung otomatis berdasarkan subtotal
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('detail_transaksi')) {
+            Schema::create('detail_transaksi', function (Blueprint $table) {
+                $table->id('id_detail_transaksi'); // Primary key
+                $table->foreignId('id_transaksi')->constrained('transaksi')->onDelete('cascade'); // Referensi ke transaksi
+                $table->foreignId('id_produk')->constrained('produk')->onDelete('cascade'); // Referensi ke produk
+                $table->integer('jumlah'); // Jumlah produk
+                $table->decimal('harga_satuan', 15, 2); // Harga satuan
+                $table->decimal('subtotal', 15, 2)->storedAs('jumlah * harga_satuan'); // Subtotal dihitung otomatis
+                $table->timestamps(); // Timestamps created_at, updated_at
+            });
+        }
     }
 
     /**

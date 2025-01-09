@@ -14,37 +14,21 @@ class Transaksi extends Model
     protected $primaryKey = 'id_transaksi';
 
     protected $fillable = [
-        'id_staff', 'id_diskon', 'jumlah_bayar', 'kembalian', 'nomor_transaksi'
+        'user_id', 'id_diskon', 'jumlah_bayar', 'kembalian',
     ];
-
-    // Menambahkan nomor transaksi secara otomatis
-    public static function boot()
-    {
-        parent::boot();
-
-        // Setelah transaksi disimpan, buat nomor transaksi yang unik
-        static::created(function ($transaksi) {
-            // Menyusun nomor transaksi setelah transaksi disimpan
-            $nomorTransaksi = 'TRX-' . now()->format('Ymd') . '-' . str_pad($transaksi->id, 3, '0', STR_PAD_LEFT);
-            
-            // Perbarui nomor transaksi di database
-            $transaksi->nomor_transaksi = $nomorTransaksi;
-            $transaksi->save(); // Simpan perubahan nomor transaksi
-        });
-    }
 
     public function detailTransaksi()
     {
         return $this->hasMany(DetailTransaksi::class, 'id_transaksi');
     }
-
+    
     public function diskon()
     {
         return $this->belongsTo(Diskon::class, 'id_diskon');
     }
-
-    public function staff()
+    
+    public function user()
     {
-        return $this->belongsTo(Staff::class, 'id_staff');
-    }
+        return $this->belongsTo(User::class, 'user_id');
+    }    
 }

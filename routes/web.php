@@ -34,7 +34,7 @@ Route::resource('diskon', DiskonController::class);
 Route::resource('staff', StaffController::class);
 //Transaksi
 Route::resource('transaksi', TransaksiController::class);
-Route::get('transaksi/struk/{id}', [TransaksiController::class, 'struk'])->name('transaksi.struk');
+Route::get('/transaksi/struk/{id}', [TransaksiController::class, 'show'])->name('transaksi.struk');
 Route::get('/laporan-transaksi', [TransaksiController::class, 'laporanTransaksi'])->name('laporan-transaksi.index');
 Route::get('/laporan-transaksi/{id}', [TransaksiController::class, 'detailTransaksi'])->name('laporan-transaksi.detail');
 //Toko
@@ -46,5 +46,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/toko/store', [TokoController::class, 'store'])->name('toko.store');
     Route::post('/toko/update', [TokoController::class, 'update'])->name('toko.update');
 });
+
 
 require __DIR__.'/auth.php';

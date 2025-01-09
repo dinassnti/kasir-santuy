@@ -17,13 +17,8 @@ class Staff extends Model
         'user_id', 'nama', 'email', 'no_telepon', 'alamat', 'password', 'status'
     ];
 
-public function user()
-{
-    return $this->belongsTo(User::class, 'email', 'email');
-}
-
-    public function transaksi()
+    public function user()
     {
-        return $this->hasMany(Transaksi::class, 'id_staff');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

@@ -40,22 +40,28 @@
             @endif
 
             {{-- Form Input Produk --}}
-            <form id="transaksiForm" class="mb-4">
+            <form id="transaksiForm" method="POST" action="{{ route('transaksi.store') }}" class="mb-4">
                 @csrf
 
                 <div class="row">
-                    {{-- Nama Staff --}}
+                {{-- Nama Staff --}}
+                <div class="col-md-4">
                     <div class="form-group">
-                        <label for="nama_staff">Nama Staff</label>
-                        <input type="text" id="nama_staff" class="form-control" value="{{ Auth::user()->staff->nama ?? 'Staff tidak ditemukan' }}" readonly>
+                        <label for="nama_staff">Nama Kasir</label>
+                        <input type="text" id="nama_staff" class="form-control" 
+                            value="{{ Auth::check() && Auth::user()->nama ? Auth::user()->nama : 'Nama Kasir Tidak Tersedia' }}" readonly>
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="nomor_transaksi">Nomor Transaksi</label>
-                            <input type="text" id="nomor_transaksi" class="form-control" 
-                                value="{{ old('nomor_transaksi', 'TRX-' . now()->format('Ymd') . '-' . str_pad(\App\Models\Transaksi::count() + 1, 3, '0', STR_PAD_LEFT)) }}" readonly>
-                        </div>
+                </div>
+
+                {{-- Nomor Transaksi --}}
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="id_transaksi">ID Transaksi</label>
+                        <input type="text" id="id_transaksi" class="form-control" 
+                            value="{{ $idTransaksi }}" readonly>
                     </div>
+                </div>
+
                     {{-- Pilih Produk --}}
                     <div class="col-md-6">
                         <div class="form-group">
@@ -160,93 +166,91 @@
 {{-- Script --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        let produkList = []; // Menyimpan daftar produk sementara
-        const produkTable = document.querySelector('#produkTable tbody');
-        const totalInput = document.getElementById('total');
-        const kembalianInput = document.getElementById('kembalian');
-        const jumlahBayarInput = document.getElementById('jumlah_bayar');
-        const produkDataInput = document.getElementById('produk_data');
-        const diskonSelect = document.getElementById('id_diskon');
+    let produkList = []; // Menyimpan daftar produk sementara
+    const produkTable = document.querySelector('#produkTable tbody');
+    const totalInput = document.getElementById('total');
+    const kembalianInput = document.getElementById('kembalian');
+    const jumlahBayarInput = document.getElementById('jumlah_bayar');
+    const produkDataInput = document.getElementById('produk_data');
+    const diskonSelect = document.getElementById('id_diskon');
 
-        // Tambahkan Produk ke Daftar
-        document.getElementById('tambahProduk').addEventListener('click', function () {
-            const idProduk = document.getElementById('id_produk').value;
-            const selectedOption = document.querySelector(`#id_produk option[value="${idProduk}"]`);
-            const namaProduk = selectedOption ? selectedOption.textContent.split(' - ')[0] : null;
-            const hargaSatuan = selectedOption ? parseFloat(selectedOption.dataset.harga) : null;
-            const jumlah = parseInt(document.getElementById('jumlah').value);
+    // Tambahkan Produk ke Daftar
+    document.getElementById('tambahProduk').addEventListener('click', function () {
+        const idProduk = document.getElementById('id_produk').value;
+        const selectedOption = document.querySelector(`#id_produk option[value="${idProduk}"]`);
+        const namaProduk = selectedOption ? selectedOption.textContent.split(' - ')[0] : null;
+        const hargaSatuan = selectedOption ? parseFloat(selectedOption.dataset.harga) : null;
+        const jumlah = parseInt(document.getElementById('jumlah').value);
 
-            if (!idProduk || jumlah < 1 || !hargaSatuan) {
-                alert('Pilih produk dan jumlah dengan benar.');
-                return;
-            }
-
-            const subtotal = hargaSatuan * jumlah;
-
-            // Tambahkan ke daftar produk
-            produkList.push({ id_produk: idProduk, nama_produk: namaProduk, harga_satuan: hargaSatuan, jumlah, subtotal });
-            renderTable();
-
-            // Reset form
-            document.getElementById('id_produk').value = '';
-            document.getElementById('jumlah').value = 1;
-        });
-
-        // Render Tabel Produk
-        function renderTable() {
-            produkTable.innerHTML = '';
-            let total = 0;
-
-            produkList.forEach((produk, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${produk.nama_produk}</td>
-                    <td>Rp${produk.harga_satuan.toLocaleString('id-ID')}</td>
-                    <td>${produk.jumlah}</td>
-                    <td>Rp${produk.subtotal.toLocaleString('id-ID')}</td>
-                    <td><button class="btn btn-danger btn-sm" onclick="hapusProduk(${index})">Hapus</button></td>
-                `;
-                produkTable.appendChild(row);
-                total += produk.subtotal;
-            });
-
-            // Terapkan diskon jenis persentase
-            const selectedOption = diskonSelect.options[diskonSelect.selectedIndex];
-            const nilaiDiskon = parseFloat(selectedOption.getAttribute('data-diskon')) || 0;
-
-            const totalDiskon = total * (nilaiDiskon / 100);
-            const totalAfterDiskon = total - totalDiskon;
-
-            console.log(`Diskon: ${nilaiDiskon}% (Rp${totalDiskon.toLocaleString('id-ID')})`);
-
-            // Tampilkan total setelah diskon
-            totalInput.value = `Rp${totalAfterDiskon.toLocaleString('id-ID')}`;
-            produkDataInput.value = JSON.stringify({ produkList, nilaiDiskon, totalAfterDiskon });
+        if (!idProduk || jumlah < 1 || !hargaSatuan) {
+            alert('Pilih produk dan jumlah dengan benar.');
+            return;
         }
 
-        // Hapus Produk dari Daftar
-        window.hapusProduk = function (index) {
-            produkList.splice(index, 1);
-            renderTable();
-        };
+        const subtotal = hargaSatuan * jumlah;
 
-        // Hitung Total ketika Diskon Berubah
-        diskonSelect.addEventListener('change', function () {
-            renderTable();
-        });
+        // Tambahkan ke daftar produk
+        produkList.push({ id_produk: idProduk, nama_produk: namaProduk, harga_satuan: hargaSatuan, jumlah, subtotal });
+        renderTable();
 
-        // Hitung Kembalian
-        jumlahBayarInput.addEventListener('input', function () {
-            const total = produkList.reduce((sum, produk) => sum + produk.subtotal, 0);
-            const selectedOption = diskonSelect.options[diskonSelect.selectedIndex];
-            const nilaiDiskon = parseFloat(selectedOption.getAttribute('data-diskon')) || 0;
-
-            const totalAfterDiskon = total - (total * (nilaiDiskon / 100));
-            const jumlahBayar = parseFloat(jumlahBayarInput.value) || 0;
-            const kembalian = jumlahBayar - totalAfterDiskon;
-
-            kembalianInput.value = kembalian >= 0 ? `Rp${kembalian.toLocaleString('id-ID')}` : 'Rp0';
-        });
+        // Reset form
+        document.getElementById('id_produk').value = '';
+        document.getElementById('jumlah').value = 1;
     });
+
+    // Render Tabel Produk
+    function renderTable() {
+        produkTable.innerHTML = '';
+        let total = 0;
+
+        produkList.forEach((produk, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${produk.nama_produk}</td>
+                <td>Rp${produk.harga_satuan.toLocaleString('id-ID')}</td>
+                <td>${produk.jumlah}</td>
+                <td>Rp${produk.subtotal.toLocaleString('id-ID')}</td>
+                <td><button class="btn btn-danger btn-sm" onclick="hapusProduk(${index})">Hapus</button></td>
+            `;
+            produkTable.appendChild(row);
+            total += produk.subtotal;
+        });
+
+        // Terapkan diskon jenis persentase
+        const selectedOption = diskonSelect.options[diskonSelect.selectedIndex];
+        const nilaiDiskon = parseFloat(selectedOption.getAttribute('data-diskon')) || 0;
+
+        const totalDiskon = total * (nilaiDiskon / 100);
+        const totalAfterDiskon = total - totalDiskon;
+
+        // Tampilkan total setelah diskon
+        totalInput.value = `Rp${totalAfterDiskon.toLocaleString('id-ID')}`;
+        produkDataInput.value = JSON.stringify({ produkList, nilaiDiskon, totalAfterDiskon });
+    }
+
+    // Hapus Produk dari Daftar
+    window.hapusProduk = function (index) {
+        produkList.splice(index, 1);
+        renderTable();
+    };
+
+    // Hitung Total ketika Diskon Berubah
+    diskonSelect.addEventListener('change', function () {
+        renderTable();
+    });
+
+    // Hitung Kembalian
+    jumlahBayarInput.addEventListener('input', function () {
+        const total = produkList.reduce((sum, produk) => sum + produk.subtotal, 0);
+        const selectedOption = diskonSelect.options[diskonSelect.selectedIndex];
+        const nilaiDiskon = parseFloat(selectedOption.getAttribute('data-diskon')) || 0;
+
+        const totalAfterDiskon = total - (total * (nilaiDiskon / 100));
+        const jumlahBayar = parseFloat(jumlahBayarInput.value) || 0;
+        const kembalian = jumlahBayar - totalAfterDiskon;
+
+        kembalianInput.value = kembalian >= 0 ? `Rp${kembalian.toLocaleString('id-ID')}` : 'Rp0';
+    });
+});
 </script>
 @endsection

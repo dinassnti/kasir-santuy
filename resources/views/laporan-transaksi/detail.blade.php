@@ -1,26 +1,21 @@
-@extends('layouts.app') <!-- Assuming you have a layout in the 'resources/views/layouts/app.blade.php' -->
+@extends('layouts.app')
 
 @section('content')
 <div class="container mt-4">
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
+    <div class="card shadow-lg border-primary">
+        <div class="card-header bg-primary text-white text-center">
             <h3 class="card-title">Detail Transaksi #{{ $transaksi->id_transaksi }}</h3>
         </div>
         <div class="card-body">
             <!-- Informasi dasar transaksi -->
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <p><strong>Staff:</strong> 
-                        <span class="badge bg-info text-dark">{{ $transaksi->staff ? $transaksi->staff->nama : 'Staff Tidak Ditemukan' }}</span>
+                    <p><strong>Kasir:</strong> 
+                        {{ $transaksi->user->nama ?? 'Pengguna Tidak Ditemukan' }}
                     </p>
                 </div>
                 <div class="col-md-6">
                     <p><strong>Tanggal Transaksi:</strong> {{ $transaksi->created_at->format('d/m/Y H:i:s') }}</p>
-                </div>
-                <div class="col-md-12">
-                    <p><strong>Toko:</strong> 
-                        <span class="badge bg-secondary">{{ $transaksi->toko ? $transaksi->toko->nama_toko : 'Toko Tidak Ditemukan' }}</span>
-                    </p>
                 </div>
             </div>
 
@@ -28,11 +23,11 @@
             <div class="mb-4">
                 @if($transaksi->diskon)
                     <p><strong>Diskon:</strong> 
-                        <span class="badge bg-success">{{ $transaksi->diskon->nilai_diskon }}%</span>
+                        {{ $transaksi->diskon->persentase }}%
                     </p>
                 @else
                     <p><strong>Diskon:</strong> 
-                        <span class="badge bg-danger">Tidak ada diskon</span>
+                        Tidak ada diskon
                     </p>
                 @endif
             </div>
@@ -40,7 +35,7 @@
             <!-- Detail produk yang dibeli -->
             <h4 class="mb-3">Detail Belanja:</h4>
             <div class="table-responsive">
-                <table class="table table-hover table-bordered">
+                <table class="table table-bordered table-striped table-hover">
                     <thead class="table-light">
                         <tr>
                             <th>Produk</th>
@@ -51,9 +46,9 @@
                     <tbody>
                         @forelse ($transaksi->detailTransaksi as $detail)
                             <tr>
-                                <td>{{ $detail->produk ? $detail->produk->nama_produk : 'Produk Tidak Ditemukan' }}</td>
+                                <td>{{ $detail->produk->nama_produk ?? 'Produk Tidak Ditemukan' }}</td>
                                 <td>{{ $detail->jumlah }}</td>
-                                <td class="text-end">Rp {{ number_format($detail->subtotal, 2, ',', '.') }}</td>
+                                <td class="text-end">Rp {{ number_format($detail->harga_satuan * $detail->jumlah, 2, ',', '.') }}</td>
                             </tr>
                         @empty
                             <tr>
@@ -70,13 +65,34 @@
 
             <!-- Total belanja dan informasi pembayaran -->
             <div class="mt-4">
-                <h5 class="text-success">Total Belanja: Rp {{ number_format($transaksi->detailTransaksi->sum('subtotal'), 2, ',', '.') }}</h5>
-                <p><strong>Jumlah Bayar:</strong> Rp {{ number_format($transaksi->jumlah_bayar, 2, ',', '.') }}</p>
-                <p><strong>Kembalian:</strong> Rp {{ number_format($transaksi->kembalian, 2, ',', '.') }}</p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="text-success">Total Belanja:</h5>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <h5 class="text-success">Rp {{ number_format($transaksi->detailTransaksi->sum('subtotal'), 2, ',', '.') }}</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>Jumlah Bayar:</strong>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        Rp {{ number_format($transaksi->jumlah_bayar, 2, ',', '.') }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <strong>Kembalian:</strong>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        Rp {{ number_format($transaksi->kembalian, 2, ',', '.') }}
+                    </div>
+                </div>
             </div>
 
             <!-- Kembali ke daftar transaksi -->
-            <div class="mt-4">
+            <div class="mt-4 text-center">
                 <a href="{{ route('laporan-transaksi.index') }}" class="btn btn-primary">
                     <i class="bi bi-arrow-left"></i> Kembali ke Daftar Transaksi
                 </a>

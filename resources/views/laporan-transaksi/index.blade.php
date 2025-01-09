@@ -32,8 +32,8 @@
         <table class="table table-hover table-bordered shadow-sm">
             <thead class="table-primary text-center">
                 <tr>
-                    <th>Nomor Transaksi</th>
-                    <th>Staff</th>
+                    <th>ID Transaksi</th>
+                    <th>Kasir</th>
                     <th>Tanggal</th>
                     <th>Total Belanja</th>
                     <th>Aksi</th>
@@ -42,9 +42,9 @@
             <tbody>
                 @foreach ($transaksiList as $transaksi)
                     <tr>
-                        <td>{{ $transaksi->nomor_transaksi }}</td>
-                        <td>{{ $transaksi->staff ? $transaksi->staff->nama : 'Tidak Ada Staff' }}</td>
-                        <td>{{ $transaksi->created_at->format('d/m/Y H:i:s') }}</td>
+                        <td>{{ $transaksi->id_transaksi }}</td>
+                        <td>{{ $transaksi->user ? $transaksi->user->nama : 'Tidak Ada Staff' }}</td>
+                        <td>{{ $transaksi->created_at->isToday() ? now()->format('d/m/Y') : $transaksi->created_at->format('d/m/Y') }}</td>
                         <td class="text-end">Rp {{ number_format($transaksi->detailTransaksi->sum('subtotal'), 2, ',', '.') }}</td>
                         <td class="text-center">
                             <a href="{{ route('laporan-transaksi.detail', $transaksi->id_transaksi) }}" class="btn btn-info btn-sm">
