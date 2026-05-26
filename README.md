@@ -48,7 +48,9 @@ Buka terminal atau Command Prompt (`cmd`), masuk ke direktori folder project (`k
 
 #### A. Install Dependencies PHP
 Unduh semua library PHP yang dibutuhkan oleh Laravel yang terdaftar di `composer.json`:
-```composer install```
+```
+composer install
+```
 
 #### B. Konfigurasi Environment File
 Salin file konfigurasi .env.example menjadi .env untuk mengatur konfigurasi lokal Anda:
