@@ -43,7 +43,6 @@ Sebelum memulai, pastikan perangkat Anda sudah terinstal perangkat lunak berikut
 ---
 
 ### 2. Langkah-Langkah Menjalankan Project
-
 Buka terminal atau Command Prompt (`cmd`), masuk ke direktori folder project (`kasir-santuy-main`), lalu jalankan perintah-perintah berikut:
 
 #### A. Install Dependencies PHP
@@ -54,16 +53,38 @@ composer install
 
 #### B. Konfigurasi Environment File
 Salin file konfigurasi .env.example menjadi .env untuk mengatur konfigurasi lokal Anda:
-`copy .env.example .env`
+````
+copy .env.example .env
+```
 
 * **Di PowerShell / Linux / macOS:**
-```cp .env.example .env```
+```
+cp .env.example .env
+```
 
 #### C. Generate Application Security Key
 Buat key enkripsi unik untuk aplikasi Anda yang akan disimpan di dalam file `.env`:
-```php artisan key:generate```
+```
+php artisan key:generate
+```
 
 #### D. Migrasi Database
 Jalankan migrasi untuk membuat seluruh struktur tabel (User, Produk, Kategori, Diskon, Staff, Transaksi, Toko, Manajemen Stok, dan Laporan) ke dalam database Anda:
-```php artisan migrate```
+```
+php artisan migrate
+```
 
+#### E. Kompilasi Asset Front-End
+Install dependencies Node.js dan lakukan build pada asset front-end (CSS/JavaScript) menggunakan Vite/Webpack:
+```
+npm install
+npm run build
+```
+
+#### F. Menjalankan Server Lokal
+Aplikasi sekarang siap digunakan! Jalankan server pengembangan lokal Laravel dengan perintah:
+```
+php artisan serve
+```
+
+## kasir-santuy
