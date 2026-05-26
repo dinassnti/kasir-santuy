@@ -48,25 +48,20 @@ Buka terminal atau Command Prompt (`cmd`), masuk ke direktori folder project (`k
 
 #### A. Install Dependencies PHP
 Unduh semua library PHP yang dibutuhkan oleh Laravel yang terdaftar di `composer.json`:
-```bash
-composer install```
+```composer install```
 
 #### B. Konfigurasi Environment File
 Salin file konfigurasi .env.example menjadi .env untuk mengatur konfigurasi lokal Anda:
 `copy .env.example .env`
 
 * **Di PowerShell / Linux / macOS:**
-```bash
-    cp .env.example .env
-    ```
+```cp .env.example .env```
 
 #### C. Generate Application Security Key
 Buat key enkripsi unik untuk aplikasi Anda yang akan disimpan di dalam file `.env`:
-```bash
-php artisan key:generate```
+```php artisan key:generate```
 
 #### D. Migrasi Database
 Jalankan migrasi untuk membuat seluruh struktur tabel (User, Produk, Kategori, Diskon, Staff, Transaksi, Toko, Manajemen Stok, dan Laporan) ke dalam database Anda:
-```bash
-php artisan migrate```
+```php artisan migrate```
 
