@@ -55,7 +55,7 @@ composer install
 Salin file konfigurasi .env.example menjadi .env untuk mengatur konfigurasi lokal Anda:
 ````
 copy .env.example .env
-```
+````
 
 * **Di PowerShell / Linux / macOS:**
 ```
@@ -86,5 +86,3 @@ Aplikasi sekarang siap digunakan! Jalankan server pengembangan lokal Laravel den
 ```
 php artisan serve
 ```
-
-## kasir-santuy
